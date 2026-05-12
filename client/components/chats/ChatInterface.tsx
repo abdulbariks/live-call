@@ -15,8 +15,8 @@ import {
   PhoneCall
 } from 'lucide-react';
 import VideoCall from './VideoCall';
-// import VideoCall from './VideoCall';
-// import AudioCall from './AudioCall';
+import AudioCall from './AudioCall';
+
 
 
 interface User {
@@ -46,6 +46,11 @@ export default function ChatInterface({ username, userId }: ChatInterfaceProps) 
   const [activeCall, setActiveCall] = useState<{ type: 'audio' | 'video'; userId: string; username: string } | null>(null);
   const [incomingCall, setIncomingCall] = useState<{ type: 'audio' | 'video'; callerId: string; callerName: string; offer: RTCSessionDescriptionInit } | null>(null);
   
+  console.log('====================================');
+  console.log("messages====",messages);
+  console.log("inputMessage====",inputMessage);
+  console.log('====================================');
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const socket = getSocket();
 
@@ -149,14 +154,14 @@ export default function ChatInterface({ username, userId }: ChatInterfaceProps) 
       );
     } else {
       return (
-        // <AudioCall
-        //   localUserId={userId}
-        //   remoteUserId={activeCall.userId}
-        //   remoteUsername={activeCall.username}
-        //   initialOffer={incomingCall?.offer}
-        //   onEndCall={handleEndCall}
-        // />  
-        <>hello</>
+        <AudioCall
+          localUserId={userId}
+          remoteUserId={activeCall.userId}
+          remoteUsername={activeCall.username}
+          initialOffer={incomingCall?.offer}
+          onEndCall={handleEndCall}
+        />  
+
       );
     }
   }
@@ -293,17 +298,17 @@ export default function ChatInterface({ username, userId }: ChatInterfaceProps) 
                     <div
                       className={`max-w-md px-4 py-3 rounded-2xl ${
                         isOwnMessage
-                          ? 'bg-[var(--color-accent)] text-white rounded-br-sm'
-                          : 'bg-[var(--color-surface)] text-[var(--color-text)] rounded-bl-sm border border-[var(--color-border)]'
+                          ? ' text-white rounded-br-sm'
+                          : ' rounded-bl-sm border'
                       }`}
                     >
                       {!isOwnMessage && (
-                        <p className="text-xs font-medium text-[var(--color-accent)] mb-1">
+                        <p className="text-xs font-medium mb-1">
                           {message.senderName}
                         </p>
                       )}
-                      <p className="break-words">{message.content}</p>
-                      <p className={`text-xs mt-1 ${isOwnMessage ? 'text-white/70' : 'text-[var(--color-text-subtle)]'}`}>
+                      <p className="wrap-break-word text-gray-500">{message.content}</p>
+                      <p className={`text-xs mt-1 ${isOwnMessage ? 'text-gray-400' : 'text-gray-500'}`}>
                         {new Date(message.timestamp).toLocaleTimeString([], { 
                           hour: '2-digit', 
                           minute: '2-digit' 
@@ -318,14 +323,14 @@ export default function ChatInterface({ username, userId }: ChatInterfaceProps) 
           </div>
 
           {/* Message Input */}
-          <div className="border-t border-[var(--color-border)] p-4 bg-[var(--color-surface)]">
+          <div className="border-t border-gray-100 p-4 ">
             <form onSubmit={handleSendMessage} className="flex gap-3">
               <input
                 type="text"
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 placeholder="Type a message..."
-                className="flex-1 px-4 py-3 bg-[var(--color-bg)] border border-[var(--color-border)] rounded-lg text-[var(--color-text)] placeholder:text-[var(--color-text-subtle)] focus:border-[var(--color-accent)] focus:outline-none"
+                className="flex-1 px-4 py-3  border  rounded-lg text-[var(--color-text)] placeholder:text-[var(--color-text-subtle)] focus:border-[var(--color-accent)] focus:outline-none"
               />
               <button
                 type="submit"

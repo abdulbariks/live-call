@@ -4,25 +4,53 @@ import { Server, Socket } from 'socket.io';
 import cors from 'cors';
 import { v4 as uuidv4 } from 'uuid';
 
+// const app = express();
+// const httpServer = createServer(app);
+
+// // Configure CORS
+// app.use(cors({
+//   origin: process.env.FRONTEND_URL || 'http://localhost:3000' || 'http://192.168.7.66:3000',
+//   credentials: true
+// }));
+
+// app.use(express.json());
+
+// // Socket.IO setup
+// const io = new Server(httpServer, {
+//   cors: {
+//     origin: process.env.FRONTEND_URL || 'http://localhost:3000' || "http://192.168.7.66:3000",
+//     methods: ['GET', 'POST'],
+//     credentials: true
+//   }
+// });
+
 const app = express();
 const httpServer = createServer(app);
 
-// Configure CORS
-app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-  credentials: true
-}));
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://192.168.7.66:3000",
+];
+
+// EXPRESS CORS
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 
-// Socket.IO setup
+// SOCKET.IO
 const io = new Server(httpServer, {
   cors: {
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-    methods: ['GET', 'POST'],
-    credentials: true
-  }
+    origin: allowedOrigins,
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
 });
+
 
 // Types
 interface User {
@@ -74,6 +102,10 @@ io.on('connection', (socket: Socket) => {
       socketId: socket.id,
       username
     };
+
+    console.log('====================================');
+    console.log(user);
+    console.log('====================================');
     
     users.set(socket.id, user);
     socket.emit('registered', { userId, username });
@@ -366,7 +398,7 @@ httpServer.listen(PORT, () => {
 ╠════════════════════════════════════════════╣
 ║   Port: ${PORT}                             
 ║   WebSocket: ws://localhost:${PORT}         
-║   Frontend: ${process.env.FRONTEND_URL || 'http://localhost:3000'}
+║   Frontend: ${process.env.FRONTEND_URL || 'http://localhost:3000' || 'http://192.168.7.66:3000'}
 ╚════════════════════════════════════════════╝
   `);
 });

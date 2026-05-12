@@ -12,6 +12,10 @@ export default function Chats() {
   const [isConnecting, setIsConnecting] = useState(false);
   const [error, setError] = useState('');
 
+  console.log('====================================');
+  console.log(username);
+  console.log('====================================');
+
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!username.trim()) return;
