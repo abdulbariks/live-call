@@ -29,6 +29,9 @@ const httpServer = createServer(app);
 
 const allowedOrigins = [
   "https://live-call-gray.vercel.app",
+  "https://live-call-abdulbariks-projects.vercel.app",
+  "https://live-call-git-main-abdulbariks-projects.vercel.app",
+  "https://live-call-iuck9jeqx-abdulbariks-projects.vercel.app",
   "http://localhost:3000",
   "http://192.168.7.66:3000",
 ];
