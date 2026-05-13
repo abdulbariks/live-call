@@ -145,7 +145,7 @@ Navigate to **http://localhost:3000** and start chatting!
 Create a `.env` file in the `server` directory:
 
 ```env
-PORT=4000
+PORT=5000
 FRONTEND_URL=http://localhost:3000
 ```
 
