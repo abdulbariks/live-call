@@ -400,7 +400,7 @@ httpServer.listen(PORT, '0.0.0.0', () => {
 ║   Port: ${PORT}                             
 ║   WebSocket: ws://0.0.0.0:${PORT}         
 ║   Accessible via: ws://<hostname>:${PORT} where hostname is localhost or your LAN IP
-║   Frontend: ${process.env.FRONTEND_URL || 'http://localhost:3000' || 'http://192.168.7.66:3000'}
+║   Frontend: ${process.env.FRONTEND_URL || 'http://localhost:3000' || 'http://192.168.7.66:3000' || 'https://live-call-gray.vercel.app'}
 ╚══════════════════════════════════════════════╝
   `);
 });

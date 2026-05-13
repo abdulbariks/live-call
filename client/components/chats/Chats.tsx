@@ -13,7 +13,7 @@ export default function Chats() {
   const [error, setError] = useState('');
 
   console.log('====================================');
-  console.log(username);
+  // console.log(username);
   console.log('====================================');
 
   const handleRegister = async (e: React.FormEvent) => {
