@@ -2,11 +2,16 @@ import { io, Socket } from 'socket.io-client';
 
 let BACKEND_URL: string;
 if (typeof window !== 'undefined') {
-  // Client: use same hostname, port 5000
-  BACKEND_URL = `${window.location.protocol}//${window.location.hostname}:5000`;
+   const isDev = window.location.hostname === 'localhost' || 
+                window.location.hostname === '192.168.7.66';
+   if (isDev) {
+    BACKEND_URL = `${window.location.protocol}//${window.location.hostname}:5000`;
+  } else {
+    BACKEND_URL = 'https://live-call-39rh.onrender.com';
+  }
 } else {
   // Server (for SSR): use env var or default
-  BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+  BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://live-call-39rh.onrender.com';
 }
 
 let socket: Socket | null = null;
