@@ -40,13 +40,7 @@ const allowedOrigins = [
 // CORS middleware for Express
 app.use(
   cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
+    origin: allowedOrigins,
     credentials: true,
   })
 );
@@ -56,13 +50,7 @@ app.use(express.json());
 // SOCKET.IO with CORS
 const io = new Server(httpServer, {
   cors: {
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
+    origin: allowedOrigins,
     methods: ["GET", "POST"],
     credentials: true,
   },
@@ -107,13 +95,8 @@ app.get('/health', (req, res) => {
   });
 });
 
-// Handle Socket.IO polling transport preflight
-app.options('/socket.io/', (req, res) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  res.sendStatus(200);
-});
+
+// Handle Socket.IO polling transport preflight - removed as cors middleware handles it
 
 // Socket.IO event handlers
 io.on('connection', (socket: Socket) => {
