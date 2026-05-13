@@ -97,7 +97,7 @@ cd server
 npm run dev
 ```
 
-The backend will start on **http://localhost:4000**
+The backend will start on **http://localhost:5000**
 
 ### Terminal 2: Start Frontend Application
 
@@ -231,7 +231,7 @@ npm start
 - Try reloading the page
 
 ### Connection Issues
-- Ensure backend is running on port 4000
+- Ensure backend is running on port 5000
 - Check firewall settings
 - Verify CORS configuration
 
