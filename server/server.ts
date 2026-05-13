@@ -28,6 +28,7 @@ const app = express();
 const httpServer = createServer(app);
 
 const allowedOrigins = [
+  "https://live-call-gray.vercel.app",
   "http://localhost:3000",
   "http://192.168.7.66:3000",
 ];
