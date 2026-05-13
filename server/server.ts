@@ -33,20 +33,32 @@ const allowedOrigins = [
   "http://192.168.7.66:3000",
 ];
 
-// EXPRESS CORS
+// CORS middleware for Express
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
   })
 );
 
 app.use(express.json());
 
-// SOCKET.IO
+// SOCKET.IO with CORS
 const io = new Server(httpServer, {
   cors: {
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     methods: ["GET", "POST"],
     credentials: true,
   },
@@ -89,6 +101,14 @@ app.get('/health', (req, res) => {
     rooms: rooms.size,
     timestamp: new Date().toISOString()
   });
+});
+
+// Handle Socket.IO polling transport preflight
+app.options('/socket.io/', (req, res) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.sendStatus(200);
 });
 
 // Socket.IO event handlers
@@ -400,7 +420,7 @@ httpServer.listen(PORT, '0.0.0.0', () => {
 ║   Port: ${PORT}                             
 ║   WebSocket: ws://0.0.0.0:${PORT}         
 ║   Accessible via: ws://<hostname>:${PORT} where hostname is localhost or your LAN IP
-║   Frontend: ${process.env.FRONTEND_URL || 'http://localhost:3000' || 'http://192.168.7.66:3000' || 'https://live-call-gray.vercel.app'}
+║   Frontend: ${process.env.FRONTEND_URL || 'https://live-call-gray.vercel.app' || 'http://localhost:3000' || 'http://192.168.7.66:3000' || 'https://live-call-gray.vercel.app'}
 ╚══════════════════════════════════════════════╝
   `);
 });
