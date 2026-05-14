@@ -28,6 +28,7 @@ const allowedOrigins = new Set([
     "https://live-call-iuck9jeqx-abdulbariks-projects.vercel.app",
     "https://live-call-xvxx.onrender.com",
     "http://localhost:3000",
+    "http://localhost:3001",
     "http://192.168.7.66:3000",
     ...(process.env.FRONTEND_URL || "")
         .split(",")
@@ -103,9 +104,6 @@ io.on('connection', (socket) => {
             socketId: socket.id,
             username
         };
-        console.log('====================================');
-        console.log(user);
-        console.log('====================================');
         users.set(socket.id, user);
         socket.emit('registered', { userId, username });
         // Broadcast updated user list

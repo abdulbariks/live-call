@@ -8,6 +8,7 @@ export const getSocket = (): Socket => {
   if (!socket) {
     socket = io(BACKEND_URL, {
       autoConnect: false,
+      transports: ['websocket'],
       reconnection: true,
       reconnectionDelay: 1000,
       reconnectionDelayMax: 5000,
@@ -20,29 +21,36 @@ export const getSocket = (): Socket => {
 export const connectSocket = (username: string): Promise<{ userId: string; username: string }> => {
   return new Promise((resolve, reject) => {
     const socket = getSocket();
+    const cleanUp = () => {
+      socket.off('connect', handleConnect);
+      socket.off('registered', handleRegistered);
+      socket.off('connect_error', handleConnectError);
+    };
+    const handleConnect = () => {
+      console.log('Socket connected:', socket.id);
+      socket.emit('register', { username });
+    };
+    const handleRegistered = (data: { userId: string; username: string }) => {
+      console.log('User registered:', data);
+      cleanUp();
+      resolve(data);
+    };
+    const handleConnectError = (error: Error) => {
+      console.error('Socket connection error:', error);
+      cleanUp();
+      reject(error);
+    };
     
     if (socket.connected) {
       socket.emit('register', { username });
-      socket.once('registered', (data) => resolve(data));
+      socket.once('registered', handleRegistered);
       return;
     }
 
+    socket.once('connect', handleConnect);
+    socket.once('registered', handleRegistered);
+    socket.once('connect_error', handleConnectError);
     socket.connect();
-
-    socket.on('connect', () => {
-      console.log('Socket connected:', socket.id);
-      socket.emit('register', { username });
-    });
-
-    socket.once('registered', (data) => {
-      console.log('User registered:', data);
-      resolve(data);
-    });
-
-    socket.on('connect_error', (error) => {
-      console.error('Socket connection error:', error);
-      reject(error);
-    });
   });
 };
 

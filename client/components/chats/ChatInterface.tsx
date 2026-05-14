@@ -45,11 +45,6 @@ export default function ChatInterface({ username, userId }: ChatInterfaceProps) 
   const [currentRoom, setCurrentRoom] = useState<string | null>(null);
   const [activeCall, setActiveCall] = useState<{ type: 'audio' | 'video'; userId: string; username: string } | null>(null);
   const [incomingCall, setIncomingCall] = useState<{ type: 'audio' | 'video'; callerId: string; callerName: string; offer: RTCSessionDescriptionInit } | null>(null);
-  
-  console.log('====================================');
-  console.log("messages====",messages);
-  console.log("inputMessage====",inputMessage);
-  console.log('====================================');
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const socket = getSocket();

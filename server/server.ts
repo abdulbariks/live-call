@@ -153,10 +153,6 @@ io.on('connection', (socket: Socket) => {
       username
     };
 
-    console.log('====================================');
-    console.log(user);
-    console.log('====================================');
-    
     users.set(socket.id, user);
     socket.emit('registered', { userId, username });
     
