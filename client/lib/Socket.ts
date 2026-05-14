@@ -1,18 +1,6 @@
 import { io, Socket } from 'socket.io-client';
 
-let BACKEND_URL: string;
-if (typeof window !== 'undefined') {
-   const isDev = window.location.hostname === 'localhost' || 
-                window.location.hostname === '192.168.7.66';
-   if (isDev) {
-    BACKEND_URL = `${window.location.protocol}//${window.location.hostname}:5000`;
-  } else {
-    BACKEND_URL = 'https://live-call-39rh.onrender.com';
-  }
-} else {
-  // Server (for SSR): use env var or default
-  BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://live-call-39rh.onrender.com';
-}
+const BACKEND_URL: string = process.env.NEXT_PUBLIC_BACKEND_URL || 'https://live-call-xvxx.onrender.com';
 
 let socket: Socket | null = null;
 
