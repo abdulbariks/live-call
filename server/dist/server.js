@@ -21,20 +21,59 @@ import { v4 as uuidv4 } from 'uuid';
 // });
 const app = express();
 const httpServer = createServer(app);
-const allowedOrigins = [
+const allowedOrigins = new Set([
+    "https://live-call-gray.vercel.app",
+    "https://live-call-abdulbariks-projects.vercel.app",
+    "https://live-call-git-main-abdulbariks-projects.vercel.app",
+    "https://live-call-iuck9jeqx-abdulbariks-projects.vercel.app",
+    "https://live-call-xvxx.onrender.com",
     "http://localhost:3000",
     "http://192.168.7.66:3000",
-];
-// EXPRESS CORS
+    ...(process.env.FRONTEND_URL || "")
+        .split(",")
+        .map((origin) => origin.trim())
+        .filter(Boolean),
+]);
+const isAllowedOrigin = (origin) => {
+    if (!origin)
+        return true;
+    if (allowedOrigins.has(origin))
+        return true;
+    try {
+        const { hostname, protocol } = new URL(origin);
+        return (protocol === "https:" &&
+            (hostname === "live-call-gray.vercel.app" ||
+                (hostname.startsWith("live-call-") && hostname.endsWith(".vercel.app")) ||
+                hostname === "live-call-xvxx.onrender.com"));
+    }
+    catch {
+        return false;
+    }
+};
+const corsOrigin = (origin, callback) => {
+    if (isAllowedOrigin(origin)) {
+        callback(null, true);
+        return;
+    }
+    console.warn(`Blocked by CORS: ${origin}`);
+    callback(new Error("Not allowed by CORS"));
+};
+// CORS middleware for Express
 app.use(cors({
-    origin: allowedOrigins,
+    origin: corsOrigin,
     credentials: true,
+    methods: ["GET", "POST", "OPTIONS"],
+}));
+app.options("*", cors({
+    origin: corsOrigin,
+    credentials: true,
+    methods: ["GET", "POST", "OPTIONS"],
 }));
 app.use(express.json());
-// SOCKET.IO
+// SOCKET.IO with CORS
 const io = new Server(httpServer, {
     cors: {
-        origin: allowedOrigins,
+        origin: corsOrigin,
         methods: ["GET", "POST"],
         credentials: true,
     },
@@ -52,6 +91,7 @@ app.get('/health', (req, res) => {
         timestamp: new Date().toISOString()
     });
 });
+// Handle Socket.IO polling transport preflight - removed as cors middleware handles it
 // Socket.IO event handlers
 io.on('connection', (socket) => {
     console.log(`User connected: ${socket.id}`);
@@ -275,7 +315,7 @@ io.on('connection', (socket) => {
         }
     });
 });
-const PORT = parseInt(process.env.PORT) || 5000;
+const PORT = Number(process.env.PORT) || 5000;
 httpServer.listen(PORT, '0.0.0.0', () => {
     console.log(`
 ╔═════════════════════════════════════════════╗
@@ -284,7 +324,7 @@ httpServer.listen(PORT, '0.0.0.0', () => {
 ║   Port: ${PORT}                             
 ║   WebSocket: ws://0.0.0.0:${PORT}         
 ║   Accessible via: ws://<hostname>:${PORT} where hostname is localhost or your LAN IP
-║   Frontend: ${process.env.FRONTEND_URL || 'http://localhost:3000' || 'http://192.168.7.66:3000'}
+║   Frontend: ${process.env.FRONTEND_URL || 'https://live-call-gray.vercel.app' || 'http://localhost:3000' || 'http://192.168.7.66:3000' || 'https://live-call-gray.vercel.app'}
 ╚══════════════════════════════════════════════╝
   `);
 });

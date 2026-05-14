@@ -27,30 +27,72 @@ import { v4 as uuidv4 } from 'uuid';
 const app = express();
 const httpServer = createServer(app);
 
-const allowedOrigins = [
+const allowedOrigins = new Set([
   "https://live-call-gray.vercel.app",
   "https://live-call-abdulbariks-projects.vercel.app",
   "https://live-call-git-main-abdulbariks-projects.vercel.app",
   "https://live-call-iuck9jeqx-abdulbariks-projects.vercel.app",
   "https://live-call-xvxx.onrender.com",
   "http://localhost:3000",
+  "http://localhost:3001",
   "http://192.168.7.66:3000",
-];
+  ...(process.env.FRONTEND_URL || "")
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean),
+]);
+
+const isAllowedOrigin = (origin?: string): boolean => {
+  if (!origin) return true;
+  if (allowedOrigins.has(origin)) return true;
+
+  try {
+    const { hostname, protocol } = new URL(origin);
+
+    return (
+      protocol === "https:" &&
+      (
+        hostname === "live-call-gray.vercel.app" ||
+        (hostname.startsWith("live-call-") && hostname.endsWith(".vercel.app")) ||
+        hostname === "live-call-xvxx.onrender.com"
+      )
+    );
+  } catch {
+    return false;
+  }
+};
+
+const corsOrigin: cors.CorsOptions["origin"] = (origin, callback) => {
+  if (isAllowedOrigin(origin)) {
+    callback(null, true);
+    return;
+  }
+
+  console.warn(`Blocked by CORS: ${origin}`);
+  callback(new Error("Not allowed by CORS"));
+};
 
 // CORS middleware for Express
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: corsOrigin,
     credentials: true,
+    methods: ["GET", "POST", "OPTIONS"],
   })
 );
+
+app.options("*", cors({
+  origin: corsOrigin,
+  credentials: true,
+  methods: ["GET", "POST", "OPTIONS"],
+}));
 
 app.use(express.json());
 
 // SOCKET.IO with CORS
 const io = new Server(httpServer, {
   cors: {
-    origin: allowedOrigins,
+    origin: corsOrigin,
     methods: ["GET", "POST"],
     credentials: true,
   },
