@@ -157,17 +157,17 @@ export default function VideoCall({
   };
 
   return (
-    <div className="h-screen bg-[var(--color-bg)] flex flex-col">
+    <div className="h-dvh min-h-0 bg-[var(--color-bg)] flex flex-col">
       {/* Header */}
-      <div className="bg-[var(--color-surface)] border-b border-[var(--color-border)] px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center">
-              <Video className="w-6 h-6 text-white" />
+      <div className="bg-[var(--color-surface)] border-b border-[var(--color-border)] px-4 py-3 sm:px-6 sm:py-4 shrink-0">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex min-w-0 items-center gap-3">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 bg-emerald-500 rounded-full flex shrink-0 items-center justify-center">
+              <Video className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
             </div>
-            <div>
+            <div className="min-w-0">
               <h2 className="font-semibold text-[var(--color-text)]">Video Call</h2>
-              <p className="text-sm text-[var(--color-text-muted)]">
+              <p className="text-xs sm:text-sm text-[var(--color-text-muted)] truncate">
                 {isConnecting ? 'Connecting...' : isConnected ? `Connected with ${remoteUsername}` : 'Waiting...'}
               </p>
             </div>
@@ -175,15 +175,15 @@ export default function VideoCall({
           
           {isConnecting && (
             <div className="flex items-center gap-2 text-[var(--color-text-muted)]">
-              <Loader2 className="w-5 h-5 animate-spin" />
-              <span className="text-sm">Establishing connection...</span>
+              <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
+              <span className="text-xs sm:text-sm">Establishing connection...</span>
             </div>
           )}
         </div>
       </div>
 
       {/* Video Grid */}
-      <div className="flex-1 p-6 relative">
+      <div className="flex-1 min-h-0 p-3 sm:p-6 relative">
         {error ? (
           <div className="h-full flex items-center justify-center">
             <div className="text-center max-w-md">
@@ -201,9 +201,9 @@ export default function VideoCall({
             </div>
           </div>
         ) : (
-          <div className="h-full grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className="h-full grid grid-cols-1 lg:grid-cols-2 auto-rows-fr gap-3 sm:gap-4">
             {/* Remote Video */}
-            <div className="relative bg-black rounded-2xl overflow-hidden border-2 border-[var(--color-border)]">
+            <div className="relative min-h-0 bg-black rounded-xl sm:rounded-2xl overflow-hidden border-2 border-[var(--color-border)]">
               <video
                 ref={remoteVideoRef}
                 autoPlay
@@ -213,21 +213,21 @@ export default function VideoCall({
               {!isConnected && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm">
                   <div className="text-center">
-                    <div className="w-24 h-24 bg-[var(--color-surface)] rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Monitor className="w-12 h-12 text-[var(--color-text-muted)]" />
+                    <div className="w-16 h-16 sm:w-24 sm:h-24 bg-[var(--color-surface)] rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                      <Monitor className="w-8 h-8 sm:w-12 sm:h-12 text-[var(--color-text-muted)]" />
                     </div>
-                    <p className="text-white font-medium text-lg">{remoteUsername}</p>
+                    <p className="text-white font-medium sm:text-lg break-words px-4">{remoteUsername}</p>
                     <p className="text-white/60 text-sm mt-1">Connecting...</p>
                   </div>
                 </div>
               )}
-              <div className="absolute top-4 left-4 px-3 py-2 bg-black/70 backdrop-blur-sm rounded-lg">
+              <div className="absolute top-3 left-3 sm:top-4 sm:left-4 max-w-[80%] px-3 py-2 bg-black/70 backdrop-blur-sm rounded-lg">
                 <p className="text-white text-sm font-medium">{remoteUsername}</p>
               </div>
             </div>
 
             {/* Local Video */}
-            <div className="relative bg-black rounded-2xl overflow-hidden border-2 border-[var(--color-accent)]">
+            <div className="relative min-h-0 bg-black rounded-xl sm:rounded-2xl overflow-hidden border-2 border-[var(--color-accent)]">
               <video
                 ref={localVideoRef}
                 autoPlay
@@ -238,14 +238,14 @@ export default function VideoCall({
               {!isVideoEnabled && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black">
                   <div className="text-center">
-                    <div className="w-20 h-20 bg-[var(--color-surface)] rounded-full flex items-center justify-center mx-auto mb-3">
-                      <VideoOff className="w-10 h-10 text-[var(--color-text-muted)]" />
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 bg-[var(--color-surface)] rounded-full flex items-center justify-center mx-auto mb-3">
+                      <VideoOff className="w-8 h-8 sm:w-10 sm:h-10 text-[var(--color-text-muted)]" />
                     </div>
                     <p className="text-white text-sm">Camera Off</p>
                   </div>
                 </div>
               )}
-              <div className="absolute top-4 left-4 px-3 py-2 bg-black/70 backdrop-blur-sm rounded-lg">
+              <div className="absolute top-3 left-3 sm:top-4 sm:left-4 px-3 py-2 bg-black/70 backdrop-blur-sm rounded-lg">
                 <p className="text-white text-sm font-medium">You</p>
               </div>
             </div>
@@ -254,38 +254,38 @@ export default function VideoCall({
       </div>
 
       {/* Controls */}
-      <div className="bg-[var(--color-surface)] border-t border-[var(--color-border)] px-6 py-6">
-        <div className="flex items-center justify-center gap-4">
+      <div className="bg-[var(--color-surface)] border-t border-[var(--color-border)] px-4 py-4 sm:px-6 sm:py-6 shrink-0">
+        <div className="flex items-center justify-center gap-3 sm:gap-4">
           <button
             onClick={toggleAudio}
-            className={`w-14 h-14 rounded-full flex items-center justify-center transition-all ${
+            className={`w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center transition-all ${
               isAudioEnabled
                 ? 'bg-[var(--color-bg)] hover:bg-[var(--color-surface-hover)] text-[var(--color-text)]'
                 : 'bg-red-500 hover:bg-red-600 text-white'
             }`}
             title={isAudioEnabled ? 'Mute' : 'Unmute'}
           >
-            {isAudioEnabled ? <Mic className="w-6 h-6" /> : <MicOff className="w-6 h-6" />}
+            {isAudioEnabled ? <Mic className="w-5 h-5 sm:w-6 sm:h-6" /> : <MicOff className="w-5 h-5 sm:w-6 sm:h-6" />}
           </button>
 
           <button
             onClick={handleEndCall}
-            className="w-16 h-16 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-all scale-110"
+            className="w-14 h-14 sm:w-16 sm:h-16 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-all scale-110"
             title="End Call"
           >
-            <PhoneOff className="w-7 h-7" />
+            <PhoneOff className="w-6 h-6 sm:w-7 sm:h-7" />
           </button>
 
           <button
             onClick={toggleVideo}
-            className={`w-14 h-14 rounded-full flex items-center justify-center transition-all ${
+            className={`w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center transition-all ${
               isVideoEnabled
                 ? 'bg-[var(--color-bg)] hover:bg-[var(--color-surface-hover)] text-[var(--color-text)]'
                 : 'bg-red-500 hover:bg-red-600 text-white'
             }`}
             title={isVideoEnabled ? 'Turn Off Camera' : 'Turn On Camera'}
           >
-            {isVideoEnabled ? <Video className="w-6 h-6" /> : <VideoOff className="w-6 h-6" />}
+            {isVideoEnabled ? <Video className="w-5 h-5 sm:w-6 sm:h-6" /> : <VideoOff className="w-5 h-5 sm:w-6 sm:h-6" />}
           </button>
         </div>
       </div>

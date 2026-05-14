@@ -162,17 +162,17 @@ export default function ChatInterface({ username, userId }: ChatInterfaceProps) 
   }
 
   return (
-    <div className="h-screen flex flex-col bg-[var(--color-bg)]">
+    <div className="h-dvh min-h-0 flex flex-col bg-[var(--color-bg)]">
       {/* Header */}
-      <div className="bg-[var(--color-surface)] border-b border-[var(--color-border)] px-6 py-4">
+      <div className="bg-[var(--color-surface)] border-b border-[var(--color-border)] px-4 py-3 sm:px-6 sm:py-4 shrink-0">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-[var(--color-accent)] rounded-full flex items-center justify-center">
-              <UserCircle className="w-6 h-6 text-white" />
+          <div className="flex min-w-0 items-center gap-3">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 bg-[var(--color-accent)] rounded-full flex shrink-0 items-center justify-center">
+              <UserCircle className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
             </div>
-            <div>
-              <h2 className="font-semibold text-[var(--color-text)]">{username}</h2>
-              <p className="text-xs text-[var(--color-text-muted)]">
+            <div className="min-w-0">
+              <h2 className="font-semibold text-[var(--color-text)] truncate">{username}</h2>
+              <p className="text-xs text-[var(--color-text-muted)] truncate">
                 {currentRoom ? `Room: ${currentRoom}` : 'Global Chat'}
               </p>
             </div>
@@ -187,17 +187,17 @@ export default function ChatInterface({ username, userId }: ChatInterfaceProps) 
         </div>
       </div>
 
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 min-h-0 flex-col md:flex-row overflow-hidden">
         {/* Sidebar - Users */}
-        <div className="w-80 bg-[var(--color-surface)] border-r border-[var(--color-border)] flex flex-col">
-          <div className="p-4 border-b border-[var(--color-border)]">
+        <div className="w-full md:w-80 md:shrink-0 max-h-[42dvh] md:max-h-none bg-[var(--color-surface)] border-b md:border-b-0 md:border-r border-[var(--color-border)] flex flex-col">
+          <div className="p-3 sm:p-4 border-b border-[var(--color-border)]">
             <h3 className="font-semibold text-[var(--color-text)] flex items-center gap-2">
               <Users className="w-5 h-5" />
               Online Users ({users.length})
             </h3>
           </div>
           
-          <div className="flex-1 overflow-y-auto p-3 space-y-2">
+          <div className="flex-1 min-h-0 overflow-y-auto p-3 space-y-2">
             {users.length === 0 ? (
               <p className="text-center text-[var(--color-text-muted)] py-8 text-sm">
                 No other users online
@@ -209,25 +209,25 @@ export default function ChatInterface({ username, userId }: ChatInterfaceProps) 
                   className="p-3 bg-[var(--color-bg)] hover:bg-[var(--color-surface-hover)] rounded-lg border border-[var(--color-border)] group"
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 bg-[var(--color-accent-dim)] rounded-full flex items-center justify-center text-xs font-medium text-[var(--color-accent)]">
+                    <div className="flex min-w-0 items-center gap-2">
+                      <div className="w-8 h-8 bg-[var(--color-accent-dim)] rounded-full flex shrink-0 items-center justify-center text-xs font-medium text-[var(--color-accent)]">
                         {user.username[0].toUpperCase()}
                       </div>
-                      <span className="font-medium text-[var(--color-text)]">{user.username}</span>
+                      <span className="font-medium text-[var(--color-text)] truncate">{user.username}</span>
                     </div>
                   </div>
                   
-                  <div className="flex gap-2">
+                  <div className="grid grid-cols-2 gap-2">
                     <button
                       onClick={() => handleStartCall(user, 'audio')}
-                      className="flex-1 py-2 px-3 bg-[var(--color-surface)] hover:bg-blue-500/10 border border-blue-500/20 rounded-lg text-blue-400 text-sm flex items-center justify-center gap-2"
+                      className="min-w-0 py-2 px-2 sm:px-3 bg-[var(--color-surface)] hover:bg-blue-500/10 border border-blue-500/20 rounded-lg text-blue-400 text-sm flex items-center justify-center gap-2"
                     >
                       <Phone className="w-4 h-4" />
                       Audio
                     </button>
                     <button
                       onClick={() => handleStartCall(user, 'video')}
-                      className="flex-1 py-2 px-3 bg-[var(--color-surface)] hover:bg-emerald-500/10 border border-emerald-500/20 rounded-lg text-emerald-400 text-sm flex items-center justify-center gap-2"
+                      className="min-w-0 py-2 px-2 sm:px-3 bg-[var(--color-surface)] hover:bg-emerald-500/10 border border-emerald-500/20 rounded-lg text-emerald-400 text-sm flex items-center justify-center gap-2"
                     >
                       <Video className="w-4 h-4" />
                       Video
@@ -239,7 +239,7 @@ export default function ChatInterface({ username, userId }: ChatInterfaceProps) 
           </div>
 
           {/* Room controls */}
-          <div className="p-4 border-t border-[var(--color-border)] space-y-2">
+          <div className="p-3 sm:p-4 border-t border-[var(--color-border)] space-y-2">
             {currentRoom ? (
               <button
                 onClick={handleLeaveRoom}
@@ -248,7 +248,7 @@ export default function ChatInterface({ username, userId }: ChatInterfaceProps) 
                 Leave Room
               </button>
             ) : (
-              <div className="space-y-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 gap-2">
                 <button
                   onClick={() => handleJoinRoom('general')}
                   className="w-full py-2 px-4 bg-[var(--color-accent-subtle)] hover:bg-[var(--color-accent-dim)] border border-[var(--color-accent)] rounded-lg text-[var(--color-accent)] text-sm font-medium flex items-center justify-center gap-2"
@@ -269,13 +269,13 @@ export default function ChatInterface({ username, userId }: ChatInterfaceProps) 
         </div>
 
         {/* Main Chat Area */}
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 min-h-0 flex flex-col">
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-4">
+          <div className="flex-1 min-h-0 overflow-y-auto p-3 sm:p-6 space-y-3 sm:space-y-4">
             {messages.length === 0 ? (
               <div className="h-full flex items-center justify-center">
                 <div className="text-center">
-                  <MessageCircle className="w-16 h-16 text-[var(--color-text-subtle)] mx-auto mb-4" />
+                  <MessageCircle className="w-12 h-12 sm:w-16 sm:h-16 text-[var(--color-text-subtle)] mx-auto mb-4" />
                   <p className="text-[var(--color-text-muted)]">No messages yet</p>
                   <p className="text-sm text-[var(--color-text-subtle)] mt-1">
                     Start a conversation!
@@ -291,19 +291,19 @@ export default function ChatInterface({ username, userId }: ChatInterfaceProps) 
                     className={`flex ${isOwnMessage ? 'justify-end' : 'justify-start'} animate-slide-up`}
                   >
                     <div
-                      className={`max-w-md px-4 py-3 rounded-2xl ${
+                      className={`max-w-[85%] sm:max-w-md px-3 py-2.5 sm:px-4 sm:py-3 shadow-sm rounded-2xl ${
                         isOwnMessage
-                          ? ' text-white rounded-br-sm'
-                          : ' rounded-bl-sm border'
+                          ? 'bg-[var(--color-accent)] text-white rounded-br-sm'
+                          : 'bg-white text-[var(--color-text)] rounded-bl-sm border border-[var(--color-border)]'
                       }`}
                     >
                       {!isOwnMessage && (
-                        <p className="text-xs font-medium mb-1">
+                        <p className="text-xs font-medium mb-1 text-[var(--color-accent)]">
                           {message.senderName}
                         </p>
                       )}
-                      <p className="wrap-break-word text-gray-500">{message.content}</p>
-                      <p className={`text-xs mt-1 ${isOwnMessage ? 'text-gray-400' : 'text-gray-500'}`}>
+                      <p className={isOwnMessage ? 'break-words text-white' : 'break-words text-[var(--color-text)]'}>{message.content}</p>
+                      <p className={`text-xs mt-1 ${isOwnMessage ? 'text-blue-100' : 'text-[var(--color-text-subtle)]'}`}>
                         {new Date(message.timestamp).toLocaleTimeString([], { 
                           hour: '2-digit', 
                           minute: '2-digit' 
@@ -318,19 +318,19 @@ export default function ChatInterface({ username, userId }: ChatInterfaceProps) 
           </div>
 
           {/* Message Input */}
-          <div className="border-t border-gray-100 p-4 ">
+          <div className="border-t border-gray-100 p-3 sm:p-4 shrink-0">
             <form onSubmit={handleSendMessage} className="flex gap-3">
               <input
                 type="text"
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 placeholder="Type a message..."
-                className="flex-1 px-4 py-3  border  rounded-lg text-[var(--color-text)] placeholder:text-[var(--color-text-subtle)] focus:border-[var(--color-accent)] focus:outline-none"
+                className="min-w-0 flex-1 px-3 py-3 sm:px-4 bg-white border border-[var(--color-border)] rounded-lg text-[var(--color-text)] shadow-sm placeholder:text-[var(--color-text-subtle)] focus:border-[var(--color-accent)] focus:outline-none focus:ring-4 focus:ring-blue-100"
               />
               <button
                 type="submit"
                 disabled={!inputMessage.trim()}
-                className="px-6 py-3 bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] disabled:bg-[var(--color-border)] disabled:cursor-not-allowed text-white font-medium rounded-lg flex items-center gap-2"
+                className="h-12 w-12 sm:w-auto sm:px-6 sm:py-3 bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] disabled:bg-[var(--color-border)] disabled:cursor-not-allowed text-white font-medium rounded-lg flex shrink-0 items-center justify-center gap-2"
               >
                 <Send className="w-5 h-5" />
               </button>
@@ -341,8 +341,8 @@ export default function ChatInterface({ username, userId }: ChatInterfaceProps) 
 
       {/* Incoming Call Modal */}
       {incomingCall && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in">
-          <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl p-8 max-w-md w-full mx-4 animate-slide-up">
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in p-4">
+          <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-2xl p-5 sm:p-8 max-w-md w-full animate-slide-up">
             <div className="text-center mb-6">
               <div className="w-20 h-20 bg-[var(--color-accent-dim)] rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse-subtle">
                 <PhoneCall className="w-10 h-10 text-[var(--color-accent)]" />

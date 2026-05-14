@@ -181,14 +181,14 @@ export default function AudioCall({
   };
 
   return (
-    <div className="h-screen bg-[var(--color-bg)] flex items-center justify-center p-6">
+    <div className="min-h-dvh bg-[var(--color-bg)] flex items-center justify-center overflow-y-auto px-3 py-5 sm:p-6">
       {/* Hidden audio elements */}
       <audio ref={localAudioRef} autoPlay muted />
       <audio ref={remoteAudioRef} autoPlay />
 
       <div className="w-full max-w-md">
         {error ? (
-          <div className="glass-effect rounded-3xl p-8 text-center animate-slide-up">
+          <div className="glass-effect rounded-2xl sm:rounded-3xl p-5 sm:p-8 text-center animate-slide-up">
             <div className="w-20 h-20 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
               <Phone className="w-10 h-10 text-red-400" />
             </div>
@@ -202,28 +202,28 @@ export default function AudioCall({
             </button>
           </div>
         ) : (
-          <div className="glass-effect rounded-3xl p-8 animate-slide-up">
+          <div className="glass-effect rounded-2xl sm:rounded-3xl p-5 sm:p-8 animate-slide-up">
             {/* Status Indicator */}
-            <div className="text-center mb-8">
-              <div className="relative inline-block mb-6">
+            <div className="text-center mb-6 sm:mb-8">
+              <div className="relative inline-block mb-5 sm:mb-6">
                 {/* Animated pulse rings */}
                 <div className="absolute inset-0 flex items-center justify-center">
                   {isConnected && (
                     <>
-                      <div className="absolute w-32 h-32 bg-blue-500/20 rounded-full animate-ping" style={{ animationDuration: '2s' }} />
-                      <div className="absolute w-40 h-40 bg-blue-500/10 rounded-full animate-ping" style={{ animationDuration: '3s', animationDelay: '0.5s' }} />
+                      <div className="absolute w-28 h-28 sm:w-32 sm:h-32 bg-blue-500/20 rounded-full animate-ping" style={{ animationDuration: '2s' }} />
+                      <div className="absolute w-36 h-36 sm:w-40 sm:h-40 bg-blue-500/10 rounded-full animate-ping" style={{ animationDuration: '3s', animationDelay: '0.5s' }} />
                     </>
                   )}
                 </div>
                 
                 {/* Avatar */}
-                <div className="relative w-32 h-32 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center shadow-2xl">
-                  <User className="w-16 h-16 text-white" />
+                <div className="relative w-28 h-28 sm:w-32 sm:h-32 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center shadow-2xl">
+                  <User className="w-14 h-14 sm:w-16 sm:h-16 text-white" />
                 </div>
               </div>
 
               {/* User Info */}
-              <h2 className="text-2xl font-bold text-[var(--color-text)] mb-2">
+              <h2 className="text-xl sm:text-2xl font-bold text-[var(--color-text)] mb-2 break-words">
                 {remoteUsername}
               </h2>
               
@@ -255,8 +255,8 @@ export default function AudioCall({
             </div>
 
             {/* Audio Status */}
-            <div className="grid grid-cols-2 gap-3 mb-8">
-              <div className="bg-[var(--color-surface)] rounded-xl p-4 border border-[var(--color-border)]">
+            <div className="grid grid-cols-2 gap-3 mb-6 sm:mb-8">
+              <div className="bg-[var(--color-surface)] rounded-xl p-3 sm:p-4 border border-[var(--color-border)]">
                 <div className="flex items-center justify-center gap-2 mb-1">
                   {isAudioEnabled ? (
                     <Mic className="w-5 h-5 text-[var(--color-accent)]" />
@@ -269,7 +269,7 @@ export default function AudioCall({
                 </p>
               </div>
 
-              <div className="bg-[var(--color-surface)] rounded-xl p-4 border border-[var(--color-border)]">
+              <div className="bg-[var(--color-surface)] rounded-xl p-3 sm:p-4 border border-[var(--color-border)]">
                 <div className="flex items-center justify-center gap-2 mb-1">
                   {isSpeakerEnabled ? (
                     <Volume2 className="w-5 h-5 text-[var(--color-accent)]" />
@@ -284,10 +284,10 @@ export default function AudioCall({
             </div>
 
             {/* Call Controls */}
-            <div className="flex items-center justify-center gap-4">
+            <div className="flex items-center justify-center gap-3 sm:gap-4">
               <button
                 onClick={toggleSpeaker}
-                className={`w-14 h-14 rounded-full flex items-center justify-center transition-all ${
+                className={`w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center transition-all ${
                   isSpeakerEnabled
                     ? 'bg-[var(--color-surface)] hover:bg-[var(--color-surface-hover)] text-[var(--color-text)]'
                     : 'bg-red-500/20 hover:bg-red-500/30 text-red-400'
@@ -303,7 +303,7 @@ export default function AudioCall({
 
               <button
                 onClick={handleEndCall}
-                className="w-16 h-16 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-all scale-110 shadow-lg hover:shadow-xl"
+                className="w-14 h-14 sm:w-16 sm:h-16 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-all scale-110 shadow-lg hover:shadow-xl"
                 title="End Call"
               >
                 <PhoneOff className="w-7 h-7" />
@@ -311,7 +311,7 @@ export default function AudioCall({
 
               <button
                 onClick={toggleAudio}
-                className={`w-14 h-14 rounded-full flex items-center justify-center transition-all ${
+                className={`w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center transition-all ${
                   isAudioEnabled
                     ? 'bg-[var(--color-surface)] hover:bg-[var(--color-surface-hover)] text-[var(--color-text)]'
                     : 'bg-red-500/20 hover:bg-red-500/30 text-red-400'
